@@ -30,11 +30,15 @@ class App extends React.Component {
     }
 
     let onLinkCreated = (link) => {
-      this.setState({ ShortURL: link.shortUrl }, () => {
+      //console.log(`Link ID is ${link.id}`)
+      let shortUrl = `https://${link.shortUrl}`
+      this.setState({ ShortURL: shortUrl }, () => {
         this.render();
       })
       console.log(`Short URL is: https://${link.shortUrl}`)
+      //console.log(`Destination URL is: ${link.destination}`)
     }
+
     rebrandlyClient.createNewLink(linkDef, onLinkCreated, onError);
   }
 
@@ -45,7 +49,7 @@ class App extends React.Component {
     
   }
 
-  handleChange = (e) => {
+  handleChange = (e) => {debugger;
     this.setState({
         [e.target.name]: e.target.value
     })
@@ -55,13 +59,22 @@ class App extends React.Component {
     return (
       <div className="App">
         Enter URL: <input type="text" name="url" value={this.state.url} onChange={e => this.handleChange(e)}></input>
-        <button type="button" onClick={this.generate}>Generate</button>
+        <button type="button" onClick={this.generate} style={{marginLeft: '10px'}}>Generate</button>
         <br></br>
         {
           this.state.isGenerated &&
-          <label>{this.state.ShortURL}</label>
+          <div style={{marginTop: '30px'}}> Short URL is : 
+          <a
+            className="App-link"
+            href={this.state.ShortURL}
+            target="_blank"
+          >
+            {this.state.ShortURL}
+          </a>
+          </div>
         }
       </div>
+
     );
   }
 }
